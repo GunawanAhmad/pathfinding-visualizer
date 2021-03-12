@@ -14,10 +14,10 @@ export default {
   components: { Node },
   data() {
     return {
-      START_NODE_ROW: 12,
-      START_NODE_COL: 13,
-      FINISH_NODE_ROW: 11,
-      FINISH_NODE_COL: 30,
+      START_NODE_ROW: this.$store.state.startNode.row,
+      START_NODE_COL: this.$store.state.startNode.col,
+      FINISH_NODE_ROW: this.$store.state.finishNode.row,
+      FINISH_NODE_COL: this.$store.state.finishNode.col,
       grid: [],
     };
   },
@@ -47,8 +47,12 @@ export default {
     },
 
     runDijkstraAlgo() {
-      const startNode = this.grid[this.START_NODE_ROW][this.START_NODE_COL];
-      const finishNode = this.grid[this.FINISH_NODE_ROW][this.FINISH_NODE_COL];
+      const startNode = this.grid[this.$store.state.startNode.row][
+        this.$store.state.startNode.col
+      ];
+      const finishNode = this.grid[this.$store.state.finishNode.row][
+        this.$store.state.finishNode.col
+      ];
       const visitedNodeInOrder = dijkstra(this.grid, startNode, finishNode);
       const shortestPathNodesInOrder = findTheShortestPath(finishNode);
       this.visualizeDijkstra(visitedNodeInOrder, shortestPathNodesInOrder);

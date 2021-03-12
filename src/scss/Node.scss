@@ -1,0 +1,118 @@
+.node {
+  height: 25px;
+  width: 25px;
+  outline: 1px solid #fae0e0;
+  display: inline-block;
+
+  &.finish-node {
+    background: transparent;
+
+    height: 25px;
+    width: 25px;
+    outline: 1px solid #fae0e0;
+
+    display: inline-block;
+    position: relative;
+
+    &.draggable::before {
+      font-family: "Font Awesome 5 Free";
+      font-weight: 900;
+      font-size: 1.5rem;
+      content: "\f140";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      color: black;
+      cursor: grab;
+    }
+  }
+
+  &.start-node {
+    position: relative;
+    background: transparent;
+    height: 25px;
+    width: 25px;
+    outline: 1px solid #fae0e0;
+
+    display: inline-block;
+
+    &.draggable::before {
+      font-family: "Font Awesome 5 Free";
+      font-weight: 900;
+      font-size: 1.5rem;
+      content: "\f3c5";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      color: black;
+      cursor: grab;
+    }
+  }
+}
+
+.visited {
+  animation-name: visitedAnimation;
+  animation-duration: 1.5s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+@keyframes visitedAnimation {
+  0% {
+    transform: scale(0.3);
+    background-color: #f48b29;
+    border-radius: 100%;
+  }
+
+  50% {
+    background-color: #f0c929;
+  }
+
+  75% {
+    transform: scale(1.2);
+    background-color: #f0c929;
+  }
+
+  100% {
+    transform: scale(1);
+    background-color: #f0c929;
+  }
+}
+
+.node-wall {
+  background-color: rgb(12, 53, 71);
+}
+
+.short {
+  animation-name: shortestPath;
+  animation-duration: 1.5s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+@keyframes shortestPath {
+  0% {
+    transform: scale(0.6);
+    background-color: #fbe6c2;
+  }
+
+  50% {
+    transform: scale(1.2);
+    background-color: #fbe6c2;
+  }
+
+  100% {
+    transform: scale(1);
+    background-color: #fbe6c2;
+  }
+}
