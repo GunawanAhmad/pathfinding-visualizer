@@ -15,6 +15,7 @@ export default new Vuex.Store({
       col: 30,
       element: null,
     },
+    runBtn: null,
   },
   mutations: {},
   actions: {},

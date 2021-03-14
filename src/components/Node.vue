@@ -45,8 +45,6 @@ export default {
     dragEnd(e) {
       e.preventDefault();
       e.target.style.opacity = "1";
-
-      console.log(e.target);
     },
     dragOver(e) {
       e.preventDefault();
@@ -79,7 +77,6 @@ export default {
         this.$store.state.finishNode.col = newNode[2];
       }
       if (e.target === lastDraggedElement) return;
-
       lastDraggedElement.draggable = false;
       lastDraggedElement.className = "";
       lastDraggedElement.classList.add("node");

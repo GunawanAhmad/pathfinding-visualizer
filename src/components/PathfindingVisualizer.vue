@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <button @click="runDijkstraAlgo" class="btn">RUN</button>
     <div class="grid" v-for="(row, rowIndex) in grid" :key="rowIndex">
       <Node v-for="(col, colIndex) in row" :key="colIndex" :node="col"></Node>
     </div>
@@ -8,7 +7,7 @@
 </template>
 
 <script>
-import Node from "../components/Node.vue";
+import Node from "./Node.vue";
 import { dijkstra, findTheShortestPath } from "../algorithms/dijkstra";
 export default {
   components: { Node },
@@ -47,25 +46,33 @@ export default {
     },
 
     runDijkstraAlgo() {
+      let visitedNodeInOrder = [];
+      let shortestPathNodesInOrder = [];
       const startNode = this.grid[this.$store.state.startNode.row][
         this.$store.state.startNode.col
       ];
       const finishNode = this.grid[this.$store.state.finishNode.row][
         this.$store.state.finishNode.col
       ];
-      const visitedNodeInOrder = dijkstra(this.grid, startNode, finishNode);
-      const shortestPathNodesInOrder = findTheShortestPath(finishNode);
+      visitedNodeInOrder = dijkstra(this.grid, startNode, finishNode);
+      shortestPathNodesInOrder = findTheShortestPath(finishNode);
       this.visualizeDijkstra(visitedNodeInOrder, shortestPathNodesInOrder);
     },
     visualizeDijkstra(visitedNodeInOrder, shortestPathNodesInOrder) {
       for (let i = 0; i <= visitedNodeInOrder.length; i++) {
         if (i === visitedNodeInOrder.length) {
           setTimeout(() => {
-            console.log("short");
             this.visualizeShortestPath(shortestPathNodesInOrder);
           }, 20 * i);
         }
         setTimeout(() => {
+          if (i === visitedNodeInOrder.length) {
+            this.$store.state.runBtn.disabled = false;
+            this.$store.state.clearBtn.disabled = false;
+          } else {
+            this.$store.state.runBtn.disabled = true;
+            this.$store.state.clearBtn.disabled = true;
+          }
           const node = visitedNodeInOrder[i];
           document
             .getElementById(`node-${node.row}-${node.col}`)
@@ -86,6 +93,33 @@ export default {
   },
   mounted() {
     this.grid = this.getInitialGrid();
+    this.$store.state.runBtn.addEventListener("click", () => {
+      if (this.$store.state.runBtn.classList.contains("start")) {
+        this.$store.state.runBtn.classList.remove("start");
+        this.$store.state.runBtn.classList.add("finish");
+        this.grid = this.getInitialGrid();
+        this.runDijkstraAlgo();
+      } else if (this.$store.state.runBtn.classList.contains("finish")) {
+        let visitedNodes = document.querySelectorAll(".visited");
+
+        visitedNodes.forEach((node) => {
+          node.classList.remove("visited");
+          node.classList.remove("short");
+        });
+        this.grid = this.getInitialGrid();
+        this.runDijkstraAlgo();
+      }
+    });
+
+    this.$store.state.clearBtn.addEventListener("click", () => {
+      this.$store.state.runBtn.classList.add("start");
+      this.$store.state.runBtn.classList.remove("finish");
+      let visitedNodes = document.querySelectorAll(".visited");
+      visitedNodes.forEach((node) => {
+        node.classList.remove("visited");
+        node.classList.remove("short");
+      });
+    });
   },
 };
 </script>

@@ -1,7 +1,22 @@
 <template>
   <div id="app">
-    <router-view />
+    <Navbar />
+    <pathfinding-visualizer />
   </div>
 </template>
 
-<style lang="scss"></style>
+<script>
+import PathfindingVisualizer from "./components/PathfindingVisualizer.vue";
+import Navbar from "./components/Navbar.vue";
+export default {
+  components: { PathfindingVisualizer, Navbar },
+};
+</script>
+<style lang="scss">
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+</style>
