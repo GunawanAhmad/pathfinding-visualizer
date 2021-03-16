@@ -47,8 +47,10 @@ export default {
       };
     },
     runPathfindingAlgo() {
-      if (this.selectedAlgorithm === "astar") {
+      if (this.$store.state.selectedAlgorithm === "astar") {
         this.runAstarAlgo();
+      } else if (this.$store.state.selectedAlgorithm === "dijkstra") {
+        this.runDijkstraAlgo();
       }
     },
     runAstarAlgo() {
@@ -156,7 +158,7 @@ export default {
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  margin-top: 100px;
+  margin-top: 2rem;
 }
 
 .btn {

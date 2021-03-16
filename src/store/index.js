@@ -16,6 +16,8 @@ export default new Vuex.Store({
       element: null,
     },
     runBtn: null,
+    clearbtn: null,
+    selectedAlgorithm: "dijkstra",
   },
   mutations: {},
   actions: {},

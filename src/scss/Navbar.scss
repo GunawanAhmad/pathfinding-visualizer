@@ -1,0 +1,124 @@
+.nav-container {
+  .navbar {
+    min-height: 5rem;
+    background: #f0c929;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+
+    .select-algo {
+      margin-right: 1rem;
+      span {
+        margin-right: 0.5rem;
+      }
+      select {
+        background-color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 10px;
+        font-size: 1rem;
+        text-align: center;
+      }
+    }
+
+    .run-btn,
+    .clear-btn {
+      background: #ac0d0d;
+      color: white;
+      border: none;
+      max-height: 50px;
+      padding: 0.5rem 1rem;
+      margin-right: 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:disabled {
+        background: rgb(150, 149, 149);
+      }
+
+      &:hover {
+        background: #fbe6c2;
+        color: #313131;
+      }
+    }
+    .run-btn {
+      background: rgb(1, 190, 1);
+    }
+
+    .node-sign {
+      display: flex;
+      align-items: center;
+      padding: 0.5rem 0;
+      color: #313131;
+
+      &:first-child {
+        margin-right: 1rem;
+      }
+
+      .icon {
+        font-size: 1.5rem;
+        width: 30px;
+        display: block;
+        display: flex;
+        justify-content: center;
+        margin-right: 0.1rem;
+      }
+
+      p {
+        font-weight: 600;
+      }
+    }
+  }
+  .color-info {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+    font-size: 1.2rem;
+
+    .yellow {
+      display: flex;
+      align-items: center;
+      margin-right: 5rem;
+
+      .color {
+        margin-right: 0.5rem;
+        height: 30px;
+        width: 30px;
+        background-color: #f0c929;
+      }
+    }
+
+    .soft-yellow {
+      display: flex;
+      align-items: center;
+      .color {
+        margin-right: 0.5rem;
+        height: 30px;
+        width: 30px;
+        background-color: #fbe6c2;
+      }
+    }
+  }
+
+  .sign-info {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+    gap: 2rem;
+    font-size: 1.2rem;
+
+    .info {
+      display: flex;
+      gap: 0.5rem;
+    }
+  }
+}

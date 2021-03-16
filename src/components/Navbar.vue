@@ -1,83 +1,67 @@
 <template>
-  <nav class="navbar">
-    <div class="node-sign">
-      <span class="icon"><i class="fas fa-map-marker-alt"></i></span>
-      <p>Start Node</p>
+  <div class="nav-container">
+    <nav class="navbar">
+      <div class="select-algo">
+        <span>Algorithm : </span>
+        <select name="algorithm" id="algorithm" @change="changeSelectedAlgo">
+          <option value="dijkstra" selected>Dijkstra</option>
+          <option value="astar">A*</option>
+        </select>
+      </div>
+      <button ref="visualize" class="run-btn start">Visualize !</button>
+      <button ref="clear" class="clear-btn start">Clear Board !</button>
+    </nav>
+    <div class="color-info">
+      <div class="yellow">
+        <div class="color"></div>
+        <p>{{ checkUsedAlgo }}</p>
+      </div>
+      <div class="soft-yellow">
+        <div class="color"></div>
+        <p>Shortest Path</p>
+      </div>
     </div>
-    <button ref="visualize" class="run-btn start">Visualize !</button>
-    <button ref="clear" class="clear-btn start">Clear Board !</button>
-    <div class="node-sign">
-      <span class="icon"><i class="fas fa-bullseye"></i></span>
-      <p>Target Node</p>
+    <div class="sign-info">
+      <div class="start-node info">
+        <span class="icon"><i class="fas fa-map-marker-alt"></i></span>
+        <p>Start Node</p>
+      </div>
+      <div class="finis-node info">
+        <span class="icon"><i class="fas fa-bullseye"></i></span>
+        <p>Target Node</p>
+      </div>
     </div>
-  </nav>
+  </div>
 </template>
 
 <script>
 export default {
+  data() {
+    return {
+      selectedAlgorithm: "dijkstra",
+    };
+  },
   mounted() {
     this.$store.state.runBtn = this.$refs.visualize;
     this.$store.state.clearBtn = this.$refs.clear;
   },
+  methods: {
+    changeSelectedAlgo(e) {
+      this.$store.state.selectedAlgorithm = e.target.value;
+    },
+  },
+  computed: {
+    checkUsedAlgo() {
+      let selectedAlgo = this.$store.state.selectedAlgorithm;
+      if (selectedAlgo === "dijkstra") {
+        return "Visited Nodes";
+      } else if (selectedAlgo === "astar") {
+        return "Checked Nodes";
+      }
+      return "Visited Nodes";
+    },
+  },
 };
 </script>
 
-<style lang="scss" scoped>
-.navbar {
-  min-height: 5rem;
-  background: #f0c929;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1rem;
-
-  .run-btn,
-  .clear-btn {
-    background: #ac0d0d;
-    color: white;
-    border: none;
-    max-height: 50px;
-    padding: 1rem 2rem;
-    margin-right: 1rem;
-    font-size: 1rem;
-    cursor: pointer;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    &:disabled {
-      background: rgb(150, 149, 149);
-    }
-
-    &:hover {
-      background: #fbe6c2;
-      color: #313131;
-    }
-  }
-
-  .node-sign {
-    display: flex;
-    align-items: center;
-    padding: 0.5rem 0;
-    color: #313131;
-
-    &:first-child {
-      margin-right: 1rem;
-    }
-
-    .icon {
-      font-size: 1.5rem;
-      width: 30px;
-      display: block;
-      display: flex;
-      justify-content: center;
-      margin-right: 0.1rem;
-    }
-
-    p {
-      font-weight: 600;
-    }
-  }
-}
-</style>
+<style lang="scss" scoped src="../scss/Navbar.scss"></style>
