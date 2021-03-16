@@ -9,6 +9,7 @@
 <script>
 import Node from "./Node.vue";
 import { dijkstra, findTheShortestPath } from "../algorithms/dijkstra";
+import { aStar, findTheShortestPathFromAstar } from "../algorithms/aStar";
 export default {
   components: { Node },
   data() {
@@ -18,6 +19,7 @@ export default {
       FINISH_NODE_ROW: this.$store.state.finishNode.row,
       FINISH_NODE_COL: this.$store.state.finishNode.col,
       grid: [],
+      selectedAlgorithm: "astar",
     };
   },
   methods: {
@@ -44,6 +46,22 @@ export default {
         distance: Infinity,
       };
     },
+    runPathfindingAlgo() {
+      if (this.selectedAlgorithm === "astar") {
+        this.runAstarAlgo();
+      }
+    },
+    runAstarAlgo() {
+      const startNode = this.grid[this.$store.state.startNode.row][
+        this.$store.state.startNode.col
+      ];
+      const finishNode = this.grid[this.$store.state.finishNode.row][
+        this.$store.state.finishNode.col
+      ];
+      let openListRecord = aStar(this.grid, startNode, finishNode);
+      let shortestPath = findTheShortestPathFromAstar(finishNode);
+      this.visualizeAlgo(openListRecord, shortestPath);
+    },
 
     runDijkstraAlgo() {
       let visitedNodeInOrder = [];
@@ -54,11 +72,12 @@ export default {
       const finishNode = this.grid[this.$store.state.finishNode.row][
         this.$store.state.finishNode.col
       ];
+
       visitedNodeInOrder = dijkstra(this.grid, startNode, finishNode);
       shortestPathNodesInOrder = findTheShortestPath(finishNode);
-      this.visualizeDijkstra(visitedNodeInOrder, shortestPathNodesInOrder);
+      this.visualizeAlgo(visitedNodeInOrder, shortestPathNodesInOrder);
     },
-    visualizeDijkstra(visitedNodeInOrder, shortestPathNodesInOrder) {
+    visualizeAlgo(visitedNodeInOrder, shortestPathNodesInOrder) {
       for (let i = 0; i <= visitedNodeInOrder.length; i++) {
         if (i === visitedNodeInOrder.length) {
           setTimeout(() => {
@@ -98,7 +117,7 @@ export default {
         this.$store.state.runBtn.classList.remove("start");
         this.$store.state.runBtn.classList.add("finish");
         this.grid = this.getInitialGrid();
-        this.runDijkstraAlgo();
+        this.runPathfindingAlgo();
       } else if (this.$store.state.runBtn.classList.contains("finish")) {
         let visitedNodes = document.querySelectorAll(".visited");
 
@@ -107,7 +126,7 @@ export default {
           node.classList.remove("short");
         });
         this.grid = this.getInitialGrid();
-        this.runDijkstraAlgo();
+        this.runPathfindingAlgo();
       }
     });
 

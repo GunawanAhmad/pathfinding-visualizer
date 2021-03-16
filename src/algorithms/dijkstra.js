@@ -2,7 +2,6 @@ export function dijkstra(grid, startNode, finishNode) {
   startNode.distance = 0;
   const visistedNodesInOrder = [];
   const unvisitedNodes = getAllNodes(grid);
-  console.log(startNode);
   while (unvisitedNodes.length != 0) {
     sortNodesByDistance(unvisitedNodes);
     const currNode = unvisitedNodes.shift();
