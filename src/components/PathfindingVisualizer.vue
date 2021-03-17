@@ -193,7 +193,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .grid {
   display: flex;
   flex-wrap: wrap;

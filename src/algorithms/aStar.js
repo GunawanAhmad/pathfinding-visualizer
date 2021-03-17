@@ -28,7 +28,6 @@ export function aStar(grid, startNode, finishNode) {
       finishNode,
       closedList
     );
-
     closedList.push(currentNode);
   }
   return closedList;

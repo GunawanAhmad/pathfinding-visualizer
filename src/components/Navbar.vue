@@ -26,11 +26,11 @@
       </div>
     </div>
     <div class="sign-info">
-      <div class="start-node info">
+      <div class="start info">
         <span class="icon"><i class="fas fa-map-marker-alt"></i></span>
         <p>Start Node</p>
       </div>
-      <div class="finis-node info">
+      <div class="finish info">
         <span class="icon"><i class="fas fa-bullseye"></i></span>
         <p>Target Node</p>
       </div>

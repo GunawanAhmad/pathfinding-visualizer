@@ -14,7 +14,7 @@
     display: inline-block;
     position: relative;
 
-    &.draggable::before {
+    &::before {
       font-family: "Font Awesome 5 Free";
       font-weight: 900;
       font-size: 1.5rem;
@@ -38,7 +38,7 @@
 
     display: inline-block;
 
-    &.draggable::before {
+    &::before {
       font-family: "Font Awesome 5 Free";
       font-weight: 900;
       font-size: 1.5rem;
