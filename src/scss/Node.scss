@@ -102,6 +102,10 @@
   animation-play-state: running;
 }
 
+.wall {
+  background: #ac0d0d !important;
+}
+
 @keyframes shortestPath {
   0% {
     transform: scale(0.6);

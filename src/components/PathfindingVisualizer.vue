@@ -1,7 +1,14 @@
 <template>
-  <div class="container">
+  <div class="container" ref="container">
     <div class="grid" v-for="(row, rowIndex) in grid" :key="rowIndex">
-      <Node v-for="(col, colIndex) in row" :key="colIndex" :node="col"></Node>
+      <Node
+        v-for="(col, colIndex) in row"
+        :key="colIndex"
+        :node="col"
+        @mouseDown="handleMouseDown"
+        @mouseEnter="handleMouseEnter"
+        @mouseUp="handleMouseUp"
+      ></Node>
     </div>
   </div>
 </template>
@@ -20,6 +27,7 @@ export default {
       FINISH_NODE_COL: this.$store.state.finishNode.col,
       grid: [],
       selectedAlgorithm: "astar",
+      isMousePressed: false,
     };
   },
   methods: {
@@ -47,6 +55,7 @@ export default {
       };
     },
     runPathfindingAlgo() {
+      this.resetVisitedGrid();
       if (this.$store.state.selectedAlgorithm === "astar") {
         this.runAstarAlgo();
       } else if (this.$store.state.selectedAlgorithm === "dijkstra") {
@@ -60,9 +69,10 @@ export default {
       const finishNode = this.grid[this.$store.state.finishNode.row][
         this.$store.state.finishNode.col
       ];
-      let openListRecord = aStar(this.grid, startNode, finishNode);
+      let visitedList = aStar(this.grid, startNode, finishNode);
+
       let shortestPath = findTheShortestPathFromAstar(finishNode);
-      this.visualizeAlgo(openListRecord, shortestPath);
+      this.visualizeAlgo(visitedList, shortestPath);
     },
 
     runDijkstraAlgo() {
@@ -80,19 +90,21 @@ export default {
       this.visualizeAlgo(visitedNodeInOrder, shortestPathNodesInOrder);
     },
     visualizeAlgo(visitedNodeInOrder, shortestPathNodesInOrder) {
-      for (let i = 0; i <= visitedNodeInOrder.length; i++) {
-        if (i === visitedNodeInOrder.length) {
+      this.$store.state.runBtn.disabled = true;
+      this.$store.state.clearBtn.disabled = true;
+      this.$refs.container.classList.add("active");
+
+      for (let i = 0; i < visitedNodeInOrder.length; i++) {
+        if (i === visitedNodeInOrder.length - 1) {
           setTimeout(() => {
             this.visualizeShortestPath(shortestPathNodesInOrder);
           }, 20 * i);
         }
         setTimeout(() => {
-          if (i === visitedNodeInOrder.length) {
+          if (i === visitedNodeInOrder.length - 1) {
             this.$store.state.runBtn.disabled = false;
             this.$store.state.clearBtn.disabled = false;
-          } else {
-            this.$store.state.runBtn.disabled = true;
-            this.$store.state.clearBtn.disabled = true;
+            this.$refs.container.classList.remove("active");
           }
           const node = visitedNodeInOrder[i];
           document
@@ -111,6 +123,56 @@ export default {
         }, 20 * i);
       }
     },
+    handleMouseDown(node) {
+      this.createNewGridWithWallToggled(this.grid, node.nodeRow, node.nodeCol);
+      this.isMousePressed = true;
+      this.$store.state.isMousePressed = true;
+    },
+    handleMouseEnter(node) {
+      if (!this.isMousePressed) return;
+      this.createNewGridWithWallToggled(this.grid, node.nodeRow, node.nodeCol);
+    },
+    handleMouseUp(val) {
+      this.isMousePressed = val;
+    },
+    createNewGridWithWallToggled(grid, nodeRow, nodeCol) {
+      if (grid[nodeRow][nodeCol].isWall) {
+        grid[nodeRow][nodeCol].isWall = false;
+      } else {
+        grid[nodeRow][nodeCol].isWall = true;
+      }
+    },
+    resetVisitedGrid() {
+      for (let i = 0; i < this.grid.length; i++) {
+        for (let j = 0; j < this.grid[i].length; j++) {
+          this.grid[i][j].isVisited = false;
+          this.grid[i][j].distance = Infinity;
+          this.grid[i][j].previousNode = null;
+        }
+      }
+      let visitedNodes = document.querySelectorAll(".node");
+
+      visitedNodes.forEach((node) => {
+        node.classList.remove("visited");
+        node.classList.remove("short");
+      });
+    },
+    clearBoard() {
+      for (let i = 0; i < this.grid.length; i++) {
+        for (let j = 0; j < this.grid[i].length; j++) {
+          this.grid[i][j].isVisited = false;
+          this.grid[i][j].distance = Infinity;
+          this.grid[i][j].isWall = false;
+        }
+      }
+      let visitedNodes = document.querySelectorAll(".node");
+
+      visitedNodes.forEach((node) => {
+        node.classList.remove("visited");
+        node.classList.remove("short");
+        node.classList.remove("wall");
+      });
+    },
   },
   mounted() {
     this.grid = this.getInitialGrid();
@@ -118,34 +180,20 @@ export default {
       if (this.$store.state.runBtn.classList.contains("start")) {
         this.$store.state.runBtn.classList.remove("start");
         this.$store.state.runBtn.classList.add("finish");
-        this.grid = this.getInitialGrid();
         this.runPathfindingAlgo();
       } else if (this.$store.state.runBtn.classList.contains("finish")) {
-        let visitedNodes = document.querySelectorAll(".visited");
-
-        visitedNodes.forEach((node) => {
-          node.classList.remove("visited");
-          node.classList.remove("short");
-        });
-        this.grid = this.getInitialGrid();
         this.runPathfindingAlgo();
       }
     });
 
     this.$store.state.clearBtn.addEventListener("click", () => {
-      this.$store.state.runBtn.classList.add("start");
-      this.$store.state.runBtn.classList.remove("finish");
-      let visitedNodes = document.querySelectorAll(".visited");
-      visitedNodes.forEach((node) => {
-        node.classList.remove("visited");
-        node.classList.remove("short");
-      });
+      this.clearBoard();
     });
   },
 };
 </script>
 
-<style>
+<style lang="scss">
 .grid {
   display: flex;
   flex-wrap: wrap;
@@ -159,6 +207,10 @@ export default {
   justify-content: center;
   align-items: center;
   margin-top: 2rem;
+
+  &.active {
+    pointer-events: none;
+  }
 }
 
 .btn {

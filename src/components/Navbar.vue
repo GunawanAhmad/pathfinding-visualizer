@@ -20,6 +20,10 @@
         <div class="color"></div>
         <p>Shortest Path</p>
       </div>
+      <div class="red">
+        <div class="color"></div>
+        <p>Wall</p>
+      </div>
     </div>
     <div class="sign-info">
       <div class="start-node info">

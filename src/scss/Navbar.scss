@@ -100,11 +100,24 @@
     .soft-yellow {
       display: flex;
       align-items: center;
+      margin-right: 5rem;
+
       .color {
         margin-right: 0.5rem;
         height: 30px;
         width: 30px;
         background-color: #fbe6c2;
+      }
+    }
+
+    .red {
+      display: flex;
+      align-items: center;
+      .color {
+        margin-right: 0.5rem;
+        height: 30px;
+        width: 30px;
+        background-color: #ac0d0d;
       }
     }
   }

@@ -5,6 +5,7 @@ export function dijkstra(grid, startNode, finishNode) {
   while (unvisitedNodes.length != 0) {
     sortNodesByDistance(unvisitedNodes);
     const currNode = unvisitedNodes.shift();
+    if (currNode.isWall) continue;
     if (currNode.distance === Infinity) {
       return visistedNodesInOrder;
     }

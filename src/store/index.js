@@ -18,6 +18,7 @@ export default new Vuex.Store({
     runBtn: null,
     clearbtn: null,
     selectedAlgorithm: "dijkstra",
+    isMousePressed: false,
   },
   mutations: {},
   actions: {},

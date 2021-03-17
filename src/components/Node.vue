@@ -14,6 +14,8 @@
     @drop="dragDrop"
     @dragend="dragEnd"
     @mousedown="mouseDown"
+    @mouseenter="mouseEnter"
+    @mouseup="mouseUp"
   ></div>
 </template>
 
@@ -35,10 +37,30 @@ export default {
   methods: {
     mouseDown(e) {
       if (!e.target.draggable) {
+        let nodeRow = e.target.id.split("-")[1];
+        let nodeCol = e.target.id.split("-")[2];
+        this.$emit("mouseDown", { nodeRow, nodeCol });
+        e.target.classList.toggle("wall");
         e.preventDefault();
       }
       e.target.classList.add("last");
     },
+    mouseEnter(e) {
+      if (!e.target.draggable) {
+        if (this.$store.state.isMousePressed) {
+          let nodeRow = e.target.id.split("-")[1];
+          let nodeCol = e.target.id.split("-")[2];
+          this.$emit("mouseEnter", { nodeRow, nodeCol });
+          e.target.classList.toggle("wall");
+        }
+        e.preventDefault();
+      }
+    },
+    mouseUp() {
+      this.$store.state.isMousePressed = false;
+      this.$emit("mouseUp", false);
+    },
+
     dragStart(e) {
       e.target.style.opacity = "0.6";
     },
