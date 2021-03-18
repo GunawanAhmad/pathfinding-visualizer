@@ -20,6 +20,7 @@ export default new Vuex.Store({
     selectedAlgorithm: "dijkstra",
     isMousePressed: false,
     draggedNode: "",
+    draggedElm: null,
   },
   mutations: {},
   actions: {},

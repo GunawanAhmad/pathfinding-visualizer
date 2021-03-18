@@ -134,6 +134,7 @@ export default {
     },
     handleMouseUp(val) {
       this.isMousePressed = val;
+      this.$store.state.isMousePressed = val;
     },
     createNewGridWithWallToggled(grid, nodeRow, nodeCol) {
       if (grid[nodeRow][nodeCol].isWall) {

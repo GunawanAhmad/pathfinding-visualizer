@@ -6,6 +6,16 @@
         <i class="fab fa-twitter"></i>
       </a>
     </div>
+    <div class="github sign">
+      <a href="https://github.com/GunawanAhmad/pathfinding-visualizer-dev">
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="website sign">
+      <a href="https://gunawanahmad.github.io/">
+        <i class="fas fa-globe"></i>
+      </a>
+    </div>
   </footer>
 </template>
 
@@ -18,11 +28,15 @@ export default {};
   display: flex;
   justify-content: center;
   margin-top: 1rem;
-  font-size: 1.5rem;
+  font-size: 2rem;
   opacity: 0.6;
 
-  a {
-    color: #313131;
+  .sign {
+    margin-right: 2rem;
+
+    a {
+      color: #313131;
+    }
   }
 }
 </style>
