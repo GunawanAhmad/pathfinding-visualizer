@@ -1,14 +1,12 @@
 export function aStar(grid, startNode, finishNode) {
   let openList = [];
-  let openListRecord = [];
   let closedList = [];
   startNode.distance = 0;
   startNode.heuristic = 0;
   startNode.totalDistance = 0;
   openList.push(startNode);
-  openListRecord.push(startNode);
   while (openList.length != 0) {
-    let currentNode = findLowestInOpenList(openList);
+    let currentNode = findClosest(openList);
 
     if (currentNode === finishNode) {
       return closedList;
@@ -20,28 +18,30 @@ export function aStar(grid, startNode, finishNode) {
     openList = removeFromArray(currentNode, openList);
     if (currentNode.isWall) continue;
     currentNode.isVisited = true;
-    updateNeighbours(
-      currentNode,
-      grid,
-      openList,
-      openListRecord,
-      finishNode,
-      closedList
-    );
+    updateNeighbours(currentNode, grid, openList, finishNode, closedList);
     closedList.push(currentNode);
   }
   return closedList;
 }
 
-function findLowestInOpenList(openList) {
-  let current = openList[0];
+function findClosest(openList) {
+  let currentClosest, index;
   for (let i = 0; i < openList.length; i++) {
-    if (openList[i].totalDistance < current.totalDistance) {
-      current = openList[i];
+    if (
+      !currentClosest ||
+      currentClosest.totalDistance > openList[i].totalDistance
+    ) {
+      currentClosest = openList[i];
+      index = i;
+    } else if (currentClosest.totalDistance === openList[i].totalDistance) {
+      if (currentClosest.heuristic > openList[i].heuristic) {
+        currentClosest = openList[i];
+        index = i;
+      }
     }
   }
-
-  return current;
+  openList.splice(index, 1);
+  return currentClosest;
 }
 
 function removeFromArray(node, list) {
@@ -58,7 +58,7 @@ function updateNeighbours(
   node,
   grid,
   openList,
-  openListRecord,
+
   finishNode,
   closedList
 ) {
@@ -74,7 +74,6 @@ function updateNeighbours(
         }
 
         openList.push(neighbour);
-        openListRecord.push(neighbour);
       } else {
         neighbour.distance = temp;
         openList.push(neighbour);
