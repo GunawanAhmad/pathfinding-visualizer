@@ -14,7 +14,7 @@
     <div class="color-info">
       <div class="yellow">
         <div class="color"></div>
-        <p>{{ checkUsedAlgo }}</p>
+        <p>Visited Node</p>
       </div>
       <div class="soft-yellow">
         <div class="color"></div>
@@ -52,17 +52,6 @@ export default {
   methods: {
     changeSelectedAlgo(e) {
       this.$store.state.selectedAlgorithm = e.target.value;
-    },
-  },
-  computed: {
-    checkUsedAlgo() {
-      let selectedAlgo = this.$store.state.selectedAlgorithm;
-      if (selectedAlgo === "dijkstra") {
-        return "Visited Nodes";
-      } else if (selectedAlgo === "astar") {
-        return "Checked Nodes";
-      }
-      return "Visited Nodes";
     },
   },
 };

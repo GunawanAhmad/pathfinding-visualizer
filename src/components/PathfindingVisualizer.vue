@@ -17,6 +17,7 @@
 import Node from "./Node.vue";
 import { dijkstra, findTheShortestPath } from "../algorithms/dijkstra";
 import { aStar, findTheShortestPathFromAstar } from "../algorithms/aStar";
+import { bidirectionalDijkstra } from "../algorithms/bidirectionalDijkstra";
 export default {
   components: { Node },
   data() {
@@ -55,6 +56,14 @@ export default {
       };
     },
     runPathfindingAlgo() {
+      const startNode = this.grid[this.$store.state.startNode.row][
+        this.$store.state.startNode.col
+      ];
+      const finishNode = this.grid[this.$store.state.finishNode.row][
+        this.$store.state.finishNode.col
+      ];
+      let test = bidirectionalDijkstra(this.grid, startNode, finishNode);
+      console.log(test);
       this.resetVisitedGrid();
       if (this.$store.state.selectedAlgorithm === "astar") {
         this.runAstarAlgo();
@@ -196,14 +205,17 @@ export default {
 
 <style lang="scss" scoped>
 .grid {
+  display: inline-flex;
   display: flex;
-  flex-wrap: wrap;
+  // flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+  min-width: 1000px;
 }
 
 .container {
   display: flex;
+  // display: inline-block;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;

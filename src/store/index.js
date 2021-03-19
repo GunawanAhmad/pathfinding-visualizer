@@ -21,6 +21,7 @@ export default new Vuex.Store({
     isMousePressed: false,
     draggedNode: "",
     draggedElm: null,
+    dragElm: null,
   },
   mutations: {},
   actions: {},

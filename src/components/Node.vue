@@ -47,8 +47,10 @@ export default {
       } else {
         if (e.target.classList.contains("start-node")) {
           this.$store.state.draggedNode = "start";
-        } else {
+          this.$store.state.draggedElm = e.target;
+        } else if (e.target.classList.contains("finish-node")) {
           this.$store.state.draggedNode = "target";
+          this.$store.state.draggedElm = e.target;
         }
       }
     },
@@ -77,10 +79,22 @@ export default {
       let startNodes = document.querySelectorAll(".start-node");
       let finishNodes = document.querySelectorAll(".finish-node");
       if (startNodes.length > 1) {
-        startNodes[1].classList.remove("start-node");
+        for (let i = 0; i < startNodes.length; i++) {
+          startNodes[i].classList.remove("start-node");
+          // finishNodes[i].classList.remove("finish-node");
+        }
       }
+
       if (finishNodes.length > 1) {
-        finishNodes[1].classList.remove("finish-node");
+        for (let i = 0; i < finishNodes.length; i++) {
+          finishNodes[i].classList.remove("finish-node");
+          // startNodes[i].classList.remove("start-node");
+        }
+      }
+      if (this.$store.state.draggedNode == "start") {
+        this.$store.state.draggedElm.classList.add("start-node");
+      } else if (this.$store.state.draggedNode == "target") {
+        this.$store.state.draggedElm.classList.add("finish-node");
       }
       let newNode = this.$store.state.draggedElm;
       this.setStartOrTargetNode(newNode);
@@ -90,16 +104,20 @@ export default {
     },
     dragEnter(e) {
       e.preventDefault();
-
+      if (e.target.draggable) return;
       if (this.$store.state.draggedNode == "wall") return;
       this.$store.state.draggedElm = e.target;
       e.target.style.opacity = "1";
       if (this.$store.state.draggedNode == "start") {
         e.target.classList.add("start-node");
+        this.$store.state.draggedElm = e.target;
+
         // e.target.draggable = true;
       } else if (this.$store.state.draggedNode == "target") {
         this.$store.state.draggedNode = "target";
         e.target.classList.add("finish-node");
+        this.$store.state.draggedElm = e.target;
+
         // e.target.draggable = true;
       }
       if (e.target.classList.contains("wall")) {
@@ -122,6 +140,7 @@ export default {
       }
     },
     dragDrop(e) {
+      if (e.target.draggable) return;
       if (this.$store.state.draggedNode == "wall") return;
       this.setStartOrTargetNode(e.target);
       e.target.draggable = true;
@@ -135,7 +154,7 @@ export default {
     },
     setStartNode(row, col, elm) {
       elm.draggable = true;
-      elm.classList.add("start-node");
+      // elm.classList.add("start-node");
       this.$store.state.startNode.row = row;
       this.$store.state.startNode.col = col;
     },

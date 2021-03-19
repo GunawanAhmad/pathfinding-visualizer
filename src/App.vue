@@ -15,6 +15,12 @@ export default {
 };
 </script>
 <style lang="scss">
+:root {
+  --visited-clr: #e9896a;
+  --shortestPath-clr: #387c6d;
+  --wall-clr: #343f56;
+}
+
 * {
   margin: 0;
   padding: 0;

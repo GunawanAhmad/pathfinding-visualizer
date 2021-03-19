@@ -1,7 +1,7 @@
 .node {
   height: 25px;
   width: 25px;
-  outline: 1px solid #fae0e0;
+  outline: 1px solid rgba($color: #343f56, $alpha: 0.5);
   display: inline-block;
 
   &.finish-node {
@@ -9,7 +9,7 @@
 
     height: 25px;
     width: 25px;
-    outline: 1px solid #fae0e0;
+    // outline: 1px solid #fae0e0;
 
     display: inline-block;
     position: relative;
@@ -17,15 +17,22 @@
     &::before {
       font-family: "Font Awesome 5 Free";
       font-weight: 900;
-      font-size: 1.5rem;
+      font-size: 1.2rem;
       content: "\f140";
       position: absolute;
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%);
       color: #313131;
-
       cursor: grab;
+      animation: Pulse 500ms ease alternate infinite;
+    }
+
+    &.visited::before {
+      color: white !important;
+    }
+    &.short::before {
+      color: white !important;
     }
   }
 
@@ -34,91 +41,112 @@
     background: transparent;
     height: 25px;
     width: 25px;
-    outline: 1px solid #fae0e0;
+    // outline: 1px solid #fae0e0;
 
     display: inline-block;
 
     &::before {
       font-family: "Font Awesome 5 Free";
       font-weight: 900;
-      font-size: 1.5rem;
+      font-size: 1.2rem;
       content: "\f3c5";
       position: absolute;
       left: 50%;
       top: 50%;
-      transform: translate(-50%, -50%);
+      // transform: translate(-50%, -50%);
       color: #313131;
+      animation: Pulse 500ms ease alternate infinite;
 
       cursor: grab;
     }
+    &.visited::before {
+      color: white !important;
+    }
   }
-}
 
-.visited {
-  animation-name: visitedAnimation;
-  animation-duration: 1.5s;
-  animation-timing-function: ease-out;
-  animation-delay: 0;
-  animation-direction: alternate;
-  animation-iteration-count: 1;
-  animation-fill-mode: forwards;
-  animation-play-state: running;
+  &.visited {
+    animation-name: visitedAnimation;
+    animation-duration: 1.5s;
+    animation-timing-function: ease-out;
+    animation-delay: 0;
+    animation-direction: alternate;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
+    // outline: none;
+  }
+
+  &.short {
+    animation-name: shortestPath;
+    animation-duration: 1.5s;
+    animation-timing-function: ease-out;
+    animation-delay: 0;
+    animation-direction: alternate;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
+  }
+
+  &.wall {
+    background: var(--wall-clr) !important;
+    outline: 1px solid rgba($color: white, $alpha: 0.5);
+  }
 }
 
 @keyframes visitedAnimation {
   0% {
     transform: scale(0.3);
-    background-color: #f48b29;
+    background-color: var(--visited-clr);
     border-radius: 100%;
   }
 
   50% {
-    background-color: #f0c929;
+    background-color: var(--visited-clr);
   }
 
   75% {
     transform: scale(1.2);
-    background-color: #f0c929;
+    background-color: var(--visited-clr);
   }
 
   100% {
     transform: scale(1);
-    background-color: #f0c929;
+    background-color: var(--visited-clr);
   }
-}
-
-.node-wall {
-  background-color: rgb(12, 53, 71);
-}
-
-.short {
-  animation-name: shortestPath;
-  animation-duration: 1.5s;
-  animation-timing-function: ease-out;
-  animation-delay: 0;
-  animation-direction: alternate;
-  animation-iteration-count: 1;
-  animation-fill-mode: forwards;
-  animation-play-state: running;
-}
-
-.wall {
-  background: #ac0d0d !important;
 }
 
 @keyframes shortestPath {
   0% {
     transform: scale(0.6);
-    background-color: #fbe6c2;
+    background-color: #387c6d;
   }
 
   50% {
     transform: scale(1.2);
-    background-color: #fbe6c2;
+    background-color: #387c6d;
   }
 
   100% {
     transform: scale(1);
-    background-color: #fbe6c2;
+    background-color: #387c6d;
+  }
+}
+
+@keyframes Pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+
+  25% {
+    transform: translate(-50%, -50%) scale(0.85);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+  76% {
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
   }
 }

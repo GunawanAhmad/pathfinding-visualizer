@@ -1,16 +1,18 @@
 .nav-container {
   .navbar {
     min-height: 5rem;
-    background: #f0c929;
+    background: #343f56;
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     gap: 2rem;
     font-size: 1rem;
     font-weight: 600;
-
+    width: 100%;
     .select-algo {
       margin-right: 1rem;
+      color: white;
       span {
         margin-right: 0.5rem;
       }
@@ -26,7 +28,7 @@
 
     .run-btn,
     .clear-btn {
-      background: #ac0d0d;
+      background: var(--visited-clr);
       color: white;
       border: none;
       max-height: 50px;
@@ -41,20 +43,22 @@
 
       &:disabled {
         background: rgb(150, 149, 149);
+        pointer-events: none;
       }
 
       &:hover {
-        background: #fbe6c2;
+        background: #f8f5f1;
         color: #313131;
       }
     }
     .run-btn {
-      background: rgb(1, 190, 1);
+      background: var(--shortestPath-clr);
     }
 
     .node-sign {
       display: flex;
       align-items: center;
+      flex-wrap: wrap;
       padding: 0.5rem 0;
       color: #313131;
 
@@ -93,7 +97,7 @@
         margin-right: 0.5rem;
         height: 30px;
         width: 30px;
-        background-color: #f0c929;
+        background-color: var(--visited-clr);
       }
     }
 
@@ -106,7 +110,7 @@
         margin-right: 0.5rem;
         height: 30px;
         width: 30px;
-        background-color: #fbe6c2;
+        background-color: var(--shortestPath-clr);
       }
     }
 
@@ -117,7 +121,7 @@
         margin-right: 0.5rem;
         height: 30px;
         width: 30px;
-        background-color: #ac0d0d;
+        background-color: var(--wall-clr);
       }
     }
   }
