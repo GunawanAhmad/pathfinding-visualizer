@@ -64,10 +64,13 @@ export default {
       ];
       let test = bidirectionalDijkstra(this.grid, startNode, finishNode);
       console.log(test);
+      console.log(this.$store.state.selectedAlgorithm.toLowerCase());
       this.resetVisitedGrid();
-      if (this.$store.state.selectedAlgorithm === "astar") {
+      if (this.$store.state.selectedAlgorithm.toLowerCase() === "a* search") {
         this.runAstarAlgo();
-      } else if (this.$store.state.selectedAlgorithm === "dijkstra") {
+      } else if (
+        this.$store.state.selectedAlgorithm.toLowerCase() === "dijkstra"
+      ) {
         this.runDijkstraAlgo();
       }
     },
@@ -210,7 +213,7 @@ export default {
   // flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  min-width: 1000px;
+  // border: 1px solid red;
 }
 
 .container {
@@ -220,6 +223,9 @@ export default {
   justify-content: center;
   align-items: center;
   margin-top: 2rem;
+  max-width: 1000px;
+  min-width: 800px;
+  margin: 2rem auto 0 auto;
 
   &.active {
     pointer-events: none;

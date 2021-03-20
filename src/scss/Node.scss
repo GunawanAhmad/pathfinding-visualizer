@@ -9,9 +9,7 @@
 
     height: 25px;
     width: 25px;
-    // outline: 1px solid #fae0e0;
 
-    display: inline-block;
     position: relative;
 
     &::before {
@@ -20,9 +18,9 @@
       font-size: 1.2rem;
       content: "\f140";
       position: absolute;
-      left: 50%;
+      left: 45%;
       top: 50%;
-      transform: translate(-50%, -50%);
+      // transform: translate(-50%, -50%);
       color: #313131;
       cursor: grab;
       animation: Pulse 500ms ease alternate infinite;
@@ -39,11 +37,11 @@
   &.start-node {
     position: relative;
     background: transparent;
-    height: 25px;
-    width: 25px;
+    // height: 25px;
+    // width: 25px;
     // outline: 1px solid #fae0e0;
 
-    display: inline-block;
+    // display: inline-block;
 
     &::before {
       font-family: "Font Awesome 5 Free";

@@ -13,16 +13,65 @@
     .select-algo {
       margin-right: 1rem;
       color: white;
-      span {
-        margin-right: 0.5rem;
-      }
-      select {
+      display: flex;
+      align-items: center;
+
+      .box {
+        margin-left: 1rem;
         background-color: white;
-        border: none;
+        color: black;
+        position: relative;
         padding: 0.5rem 1rem;
         border-radius: 10px;
-        font-size: 1rem;
-        text-align: center;
+
+        .result {
+          display: flex;
+          justify-content: space-between;
+          cursor: pointer;
+          transition: all 250ms ease;
+          .triangle {
+            border: 7px solid var(--wall-clr);
+            border-color: var(--wall-clr) transparent transparent;
+            display: inline-block;
+            margin-left: 1rem;
+            transform: translateY(40%);
+            transition: transform 150ms ease;
+            pointer-events: none;
+
+            &.flip {
+              transform: translateY(-40%) scale(1, -1);
+            }
+          }
+        }
+
+        .ul-list {
+          position: absolute;
+          top: 120%;
+          background: white;
+          border: 1px solid var(--wall-clr);
+          overflow: hidden;
+          left: 0;
+          right: 0;
+          border-radius: 10px;
+          min-width: 150px;
+
+          li {
+            padding: 0.5rem 1rem;
+            list-style: none;
+            // border: 1px solid var(--wall-clr);
+            border-bottom: 1px solid var(--wall-clr);
+
+            &:last-of-type {
+              border: none;
+            }
+
+            &:hover {
+              background-color: var(--wall-clr);
+              color: white;
+              cursor: pointer;
+            }
+          }
+        }
       }
     }
 

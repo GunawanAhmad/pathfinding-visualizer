@@ -3,6 +3,7 @@
     <Navbar />
     <pathfinding-visualizer />
     <Aboutme />
+    <Tutorial />
   </div>
 </template>
 
@@ -10,8 +11,9 @@
 import PathfindingVisualizer from "./components/PathfindingVisualizer.vue";
 import Navbar from "./components/Navbar.vue";
 import Aboutme from "./components/Aboutme.vue";
+import Tutorial from "./components/Tutorial";
 export default {
-  components: { PathfindingVisualizer, Navbar, Aboutme },
+  components: { PathfindingVisualizer, Navbar, Aboutme, Tutorial },
 };
 </script>
 <style lang="scss">
@@ -26,5 +28,9 @@ export default {
   padding: 0;
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
+}
+
+body {
+  overflow-x: hidden;
 }
 </style>

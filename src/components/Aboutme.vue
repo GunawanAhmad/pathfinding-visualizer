@@ -29,7 +29,6 @@ export default {};
   justify-content: center;
   margin-top: 1rem;
   font-size: 2rem;
-  opacity: 0.6;
 
   .twitter a:hover:before {
     opacity: 1;
@@ -90,6 +89,11 @@ export default {};
 
   .sign {
     margin-right: 2rem;
+    opacity: 0.6;
+
+    &:hover {
+      opacity: 1;
+    }
 
     a {
       color: #313131;

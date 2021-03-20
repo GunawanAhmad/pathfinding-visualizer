@@ -3,10 +3,16 @@
     <nav class="navbar">
       <div class="select-algo">
         <span>Algorithm : </span>
-        <select name="algorithm" id="algorithm" @change="changeSelectedAlgo">
-          <option value="dijkstra" selected>Dijkstra</option>
-          <option value="astar">A*</option>
-        </select>
+        <span class="box">
+          <span class="result" @click="openAlgoList">
+            <p>{{ selectedAlgorithm }}</p>
+            <span class="triangle" ref="triangle"></span>
+          </span>
+          <ul class="ul-list" v-if="isShowingAlgoList">
+            <li @click="changeSelectedAlgo('A* Search')">A* Search</li>
+            <li @click="changeSelectedAlgo('Dijkstra')">Dijkstra</li>
+          </ul>
+        </span>
       </div>
       <button ref="visualize" class="run-btn start">Visualize !</button>
       <button ref="clear" class="clear-btn start">Clear Board !</button>
@@ -42,7 +48,8 @@
 export default {
   data() {
     return {
-      selectedAlgorithm: "dijkstra",
+      selectedAlgorithm: "Dijkstra",
+      isShowingAlgoList: false,
     };
   },
   mounted() {
@@ -50,8 +57,15 @@ export default {
     this.$store.state.clearBtn = this.$refs.clear;
   },
   methods: {
-    changeSelectedAlgo(e) {
-      this.$store.state.selectedAlgorithm = e.target.value;
+    changeSelectedAlgo(val) {
+      this.$store.state.selectedAlgorithm = val;
+      this.selectedAlgorithm = val;
+      this.isShowingAlgoList = false;
+      this.$refs.triangle.classList.remove("flip");
+    },
+    openAlgoList() {
+      this.isShowingAlgoList = true;
+      this.$refs.triangle.classList.add("flip");
     },
   },
 };
