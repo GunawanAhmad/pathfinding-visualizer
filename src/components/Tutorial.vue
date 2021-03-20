@@ -68,7 +68,7 @@ export default {
           description:
             "Pathfinding algorithm is an algorithm that used to find shortest path between two points.",
           imgLink: "https://storyset.com/city",
-          img: "navigation.svg",
+          img: "map.svg",
         },
         {
           Title: "Using the Navigation bar",
@@ -79,7 +79,7 @@ export default {
         {
           Title: "Adding Walls",
           description:
-            "Click the grid to add a wall, hold the click and move your mouse to add more wall. Walls are impenetrable, meaning that a path cannot cross through them.",
+            "Click the grid to add a wall, click and hold and move your mouse to add more wall. Walls are impenetrable, meaning that a path cannot cross through them.",
           img: "addWall.gif",
         },
       ],
