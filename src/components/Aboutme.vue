@@ -1,6 +1,5 @@
 <template>
   <footer class="container">
-    <div class="personal-web sign"></div>
     <div class="twitter sign">
       <a href="https://twitter.com/Gunawan10x">
         <i class="fab fa-twitter"></i>
@@ -56,6 +55,7 @@ export default {};
     color: white;
     padding: 0.2rem 1rem;
     border-radius: 5px;
+    pointer-events: none;
   }
 
   .github a::before {
@@ -70,6 +70,7 @@ export default {};
     color: white;
     padding: 0.2rem 1rem;
     border-radius: 5px;
+    pointer-events: none;
   }
 
   .website a::before {
@@ -85,6 +86,7 @@ export default {};
     color: white;
     padding: 0.2rem 1rem;
     border-radius: 5px;
+    pointer-events: none;
   }
 
   .sign {
