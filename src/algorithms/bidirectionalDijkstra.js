@@ -5,7 +5,7 @@ const visitedNodesFromStart = [];
 let found = false;
 let foundNode = null;
 let lastNode = null;
-let last = null;
+let last = undefined;
 
 export function bidirectionalDijkstra(grid, startNode, finishNode) {
   startNode.distance = 0;
