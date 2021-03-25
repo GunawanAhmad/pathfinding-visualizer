@@ -11,6 +11,9 @@
           <ul class="ul-list" v-if="isShowingAlgoList">
             <li @click="changeSelectedAlgo('A* Search')">A* Search</li>
             <li @click="changeSelectedAlgo('Dijkstra')">Dijkstra</li>
+            <li @click="changeSelectedAlgo('Bidirectional Dijkstra')">
+              Bidirectional Dijkstra
+            </li>
           </ul>
         </span>
       </div>

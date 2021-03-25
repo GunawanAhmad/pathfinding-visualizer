@@ -1,48 +1,88 @@
+const unvisitedNodesFromStart = [];
+const unvisitedNodesFromFinish = [];
+const visitedNodesFromFinish = [];
+const visitedNodesFromStart = [];
+let found = false;
+let foundNode = null;
+let lastNode = null;
+let last = null;
+
 export function bidirectionalDijkstra(grid, startNode, finishNode) {
   startNode.distance = 0;
   finishNode.distance = 0;
-  const visistedNodesInOrderFromStart = [];
-  const visistedNodesInOrderFromFinish = [];
   const visistedNodesInOrder = [];
-  const unvisitedNodesFromStart = getAllNodes(grid);
-  const unvisitedNodesFromFinish = getAllNodes(grid);
-  startNode.distance = Infinity;
-  unvisitedNodesFromFinish.push(startNode);
-  unvisitedNodesFromStart.splice(
-    unvisitedNodesFromStart.indexOf(finishNode),
-    1
-  );
-  finishNode.distance = Infinity;
-  unvisitedNodesFromStart.push(finishNode);
+  unvisitedNodesFromFinish.push(finishNode);
+  unvisitedNodesFromStart.push(startNode);
 
   while (
     unvisitedNodesFromStart.length != 0 &&
     unvisitedNodesFromFinish.length != 0
   ) {
-    sortNodesByDistance(unvisitedNodesFromStart);
     sortNodesByDistance(unvisitedNodesFromFinish);
-    const currNodeFromStart = unvisitedNodesFromStart.shift();
-    const currNodeFromFinish = unvisitedNodesFromFinish.shift();
-    if (currNodeFromStart.isWall) continue;
-    if (currNodeFromFinish.isWall) continue;
-    if (
-      currNodeFromStart.distance === Infinity &&
-      currNodeFromFinish.distance === Infinity
-    ) {
+    sortNodesByDistance(unvisitedNodesFromStart);
+
+    const currNodeStart = unvisitedNodesFromStart.shift();
+    const currNodeFinish = unvisitedNodesFromFinish.shift();
+
+    if (!currNodeStart.isWall) {
+      currNodeStart.isVisited = true;
+      visistedNodesInOrder.push(currNodeStart);
+      visitedNodesFromStart.push(currNodeStart);
+      if (found) {
+        if (last == "start") {
+          sortNodesByDistance(visitedNodesFromStart);
+
+          lastNode = visitedNodesFromStart[visitedNodesFromStart.length - 1];
+        } else {
+          sortNodesByDistance(visitedNodesFromFinish);
+          lastNode = visitedNodesFromFinish[visitedNodesFromFinish.length - 1];
+        }
+        return visistedNodesInOrder;
+      }
+      updateUnvisitedNeighbours(
+        currNodeStart,
+        grid,
+        unvisitedNodesFromStart,
+        true,
+        false
+      );
+    }
+    if (!currNodeFinish.isWall) {
+      currNodeFinish.isVisited = true;
+      visistedNodesInOrder.push(currNodeFinish);
+      visitedNodesFromFinish.push(currNodeFinish);
+      if (found) {
+        if (last == "start") {
+          sortNodesByDistance(visitedNodesFromStart);
+
+          lastNode = visitedNodesFromStart[visitedNodesFromStart.length - 1];
+        } else {
+          sortNodesByDistance(visitedNodesFromFinish);
+          lastNode = visitedNodesFromFinish[visitedNodesFromFinish.length - 1];
+        }
+        return visistedNodesInOrder;
+      }
+      updateUnvisitedNeighbours(
+        currNodeFinish,
+        grid,
+        unvisitedNodesFromFinish,
+        false,
+        true
+      );
+    }
+
+    if (currNodeStart == finishNode || currNodeFinish == startNode) {
+      console.log(visistedNodesInOrder);
       return visistedNodesInOrder;
     }
-    currNodeFromStart.isVisited = true;
-    currNodeFromFinish.isVisited = true;
-    visistedNodesInOrderFromStart.push(currNodeFromStart);
-    visistedNodesInOrderFromFinish.push(currNodeFromFinish);
-    visistedNodesInOrder.push(currNodeFromStart);
-    visistedNodesInOrder.push(currNodeFromFinish);
-    if (currNodeFromStart === currNodeFromFinish) {
-      console.log("hai");
-      return [];
-    }
-    updateUnvisitedNeighbours(currNodeFromStart, grid);
-    updateUnvisitedNeighbours(currNodeFromFinish, grid);
+  }
+  if (last == "start") {
+    sortNodesByDistance(visitedNodesFromStart);
+    lastNode = visitedNodesFromStart[visitedNodesFromStart.length - 1];
+  } else {
+    sortNodesByDistance(visitedNodesFromFinish);
+    lastNode = visitedNodesFromFinish[visitedNodesFromFinish.length - 1];
+    console.log(visitedNodesFromFinish[visitedNodesFromFinish.length - 1]);
   }
   return visistedNodesInOrder;
 }
@@ -51,11 +91,41 @@ function sortNodesByDistance(unvisitedNodes) {
   unvisitedNodes.sort((nodeA, nodeB) => nodeA.distance - nodeB.distance);
 }
 
-function updateUnvisitedNeighbours(node, grid) {
+function updateUnvisitedNeighbours(
+  node,
+  grid,
+  unvisitedNodes,
+  isFromStart,
+  isFromFinish
+) {
   const unvisitedNeighbours = getUnvisistedNeighbours(node, grid);
   for (let neighbour of unvisitedNeighbours) {
-    neighbour.distance = node.distance + 1;
-    neighbour.previousNode = node;
+    if (isFromStart) {
+      if (visitedNodesFromFinish.includes(neighbour)) {
+        last = "start";
+
+        foundNode = neighbour;
+        found = true;
+        return;
+      }
+    } else if (isFromFinish) {
+      if (visitedNodesFromStart.includes(neighbour)) {
+        foundNode = neighbour;
+        last = "finish";
+        found = true;
+        return;
+      }
+    }
+    if (
+      !unvisitedNodesFromFinish.includes(neighbour) &&
+      !unvisitedNodesFromStart.includes(neighbour)
+    ) {
+      if (!neighbour.isVisited) {
+        neighbour.distance = node.distance + 1;
+        neighbour.previousNode = node;
+        unvisitedNodes.push(neighbour);
+      }
+    }
   }
 }
 
@@ -66,25 +136,22 @@ function getUnvisistedNeighbours(node, grid) {
   if (col > 0) neighbours.push(grid[row][col - 1]);
   if (row < grid.length - 1) neighbours.push(grid[row + 1][col]);
   if (col < grid[0].length - 1) neighbours.push(grid[row][col + 1]);
-  return neighbours.filter((node) => !node.isVisited);
+
+  return neighbours;
 }
 
-function getAllNodes(grid) {
-  const nodes = [];
-  for (let row of grid) {
-    for (let col of row) {
-      nodes.push(col);
-    }
-  }
-  return nodes;
-}
-
-export function findTheShortestPath(finishNode) {
+export function findTheShortestPathFromBidirectional() {
   const nodesInShortesPathOrder = [];
-  let currNode = finishNode;
+  const nodesInShortesPathOrder2 = [];
+  let currNode = foundNode;
+  let currNode2 = lastNode;
   while (currNode !== null) {
     nodesInShortesPathOrder.unshift(currNode);
     currNode = currNode.previousNode;
   }
-  return nodesInShortesPathOrder;
+  while (currNode2 !== null) {
+    nodesInShortesPathOrder2.unshift(currNode2);
+    currNode2 = currNode2.previousNode;
+  }
+  return nodesInShortesPathOrder.concat(nodesInShortesPathOrder2);
 }

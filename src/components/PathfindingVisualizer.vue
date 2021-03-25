@@ -1,5 +1,6 @@
 <template>
   <div class="container" ref="container">
+    <button @click="runBidirectional">Bidirectional</button>
     <div class="grid" v-for="(row, rowIndex) in grid" :key="rowIndex">
       <Node
         v-for="(col, colIndex) in row"
@@ -17,7 +18,10 @@
 import Node from "./Node.vue";
 import { dijkstra, findTheShortestPath } from "../algorithms/dijkstra";
 import { aStar, findTheShortestPathFromAstar } from "../algorithms/aStar";
-import { bidirectionalDijkstra } from "../algorithms/bidirectionalDijkstra";
+import {
+  bidirectionalDijkstra,
+  findTheShortestPathFromBidirectional,
+} from "../algorithms/bidirectionalDijkstra";
 export default {
   components: { Node },
   data() {
@@ -55,7 +59,7 @@ export default {
         distance: Infinity,
       };
     },
-    runPathfindingAlgo() {
+    runBidirectional() {
       const startNode = this.grid[this.$store.state.startNode.row][
         this.$store.state.startNode.col
       ];
@@ -63,8 +67,10 @@ export default {
         this.$store.state.finishNode.col
       ];
       let test = bidirectionalDijkstra(this.grid, startNode, finishNode);
-      console.log(test);
-      console.log(this.$store.state.selectedAlgorithm.toLowerCase());
+      let path = findTheShortestPathFromBidirectional();
+      this.visualizeAlgo(test, path);
+    },
+    runPathfindingAlgo() {
       this.resetVisitedGrid();
       if (this.$store.state.selectedAlgorithm.toLowerCase() === "a* search") {
         this.runAstarAlgo();
@@ -72,6 +78,11 @@ export default {
         this.$store.state.selectedAlgorithm.toLowerCase() === "dijkstra"
       ) {
         this.runDijkstraAlgo();
+      } else if (
+        this.$store.state.selectedAlgorithm.toLowerCase() ===
+        "bidirectional dijkstra"
+      ) {
+        this.runBidirectional();
       }
     },
     runAstarAlgo() {
@@ -82,7 +93,6 @@ export default {
         this.$store.state.finishNode.col
       ];
       let visitedList = aStar(this.grid, startNode, finishNode);
-
       let shortestPath = findTheShortestPathFromAstar(finishNode);
       this.visualizeAlgo(visitedList, shortestPath);
     },
