@@ -2,6 +2,9 @@
   <div>
     <div class="container" v-if="isShowTutorial">
       <div class="tutorial">
+        <div class="pagePointer">
+          {{ currentPage + 1 }} / {{ pagesData.length }}
+        </div>
         <h1 class="title">{{ setPagesData.Title }}</h1>
         <p class="description">{{ setPagesData.description }}</p>
 
@@ -74,7 +77,13 @@ export default {
           Title: "Using the Navigation bar",
           description:
             "You can pick the type of the algorithm and start visualizing the algorithm from the navigation bar. You can clear the board like previous path and wall by clicking the clear board button.",
-          img: "navbar.jpg",
+          img: "navbar.png",
+        },
+        {
+          Title: "Dragging Nodes",
+          description:
+            "You can change the start and target/finish node position by dragging them",
+          img: "drag.gif",
         },
         {
           Title: "Adding Walls",

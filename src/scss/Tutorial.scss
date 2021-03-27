@@ -15,14 +15,19 @@
     height: auto;
     width: 600px;
     padding: 2rem;
+    padding-top: 1rem;
     display: flex;
     flex-direction: column;
     border-radius: 5px;
     // border: 5px solid var(--wall-clr);
 
+    .pagePointer {
+      text-align: end;
+    }
+
     .img {
       height: 250px;
-      width: 80%;
+      width: 90%;
       margin: 2rem auto;
       // max-width: 300px;
     }

@@ -22,6 +22,10 @@
       <button ref="clear" class="clear-btn start">Clear Board !</button>
     </nav>
     <div class="color-info">
+      <div class="unvisited">
+        <div class="color"></div>
+        <p>Unvisited Node</p>
+      </div>
       <div class="yellow">
         <div class="color"></div>
         <p>Visited Node</p>

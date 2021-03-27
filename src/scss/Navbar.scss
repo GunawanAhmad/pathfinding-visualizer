@@ -133,11 +133,23 @@
   }
   .color-info {
     display: flex;
-
     justify-content: center;
     align-items: center;
     margin-top: 2rem;
     font-size: 1.2rem;
+
+    .unvisited {
+      display: flex;
+      align-items: center;
+      margin-right: 5rem;
+      .color {
+        outline: 2px solid rgba($color: #343f56, $alpha: 0.5);
+        margin-right: 0.5rem;
+
+        height: 28px;
+        width: 28px;
+      }
+    }
 
     .yellow {
       display: flex;
