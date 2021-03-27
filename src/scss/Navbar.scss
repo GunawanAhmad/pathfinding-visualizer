@@ -52,8 +52,10 @@
           overflow: hidden;
           left: 0;
           right: 0;
+          width: auto;
           border-radius: 10px;
           min-width: 150px;
+          z-index: 99;
 
           li {
             padding: 0.5rem 1rem;

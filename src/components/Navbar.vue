@@ -11,6 +11,7 @@
           <ul class="ul-list" v-if="isShowingAlgoList">
             <li @click="changeSelectedAlgo('A* Search')">A* Search</li>
             <li @click="changeSelectedAlgo('Dijkstra')">Dijkstra</li>
+            <li @click="changeSelectedAlgo('BFS')">BFS</li>
             <li @click="changeSelectedAlgo('Bidirectional Dijkstra')">
               Bidirectional Dijkstra
             </li>
@@ -67,8 +68,8 @@ export default {
       this.$refs.triangle.classList.remove("flip");
     },
     openAlgoList() {
-      this.isShowingAlgoList = true;
-      this.$refs.triangle.classList.add("flip");
+      this.isShowingAlgoList = !this.isShowingAlgoList;
+      this.$refs.triangle.classList.toggle("flip");
     },
   },
 };

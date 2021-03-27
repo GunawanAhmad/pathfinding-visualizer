@@ -1,6 +1,5 @@
 <template>
   <div class="container" ref="container">
-    <button @click="runBidirectional">Bidirectional</button>
     <div class="grid" v-for="(row, rowIndex) in grid" :key="rowIndex">
       <Node
         v-for="(col, colIndex) in row"
@@ -22,6 +21,7 @@ import {
   bidirectionalDijkstra,
   findTheShortestPathFromBidirectional,
 } from "../algorithms/bidirectionalDijkstra";
+import { BFS, findTheShortestPathFromBFS } from "../algorithms/BFS";
 export default {
   components: { Node },
   data() {
@@ -59,6 +59,17 @@ export default {
         distance: Infinity,
       };
     },
+    runBFS() {
+      const startNode = this.grid[this.$store.state.startNode.row][
+        this.$store.state.startNode.col
+      ];
+      const finishNode = this.grid[this.$store.state.finishNode.row][
+        this.$store.state.finishNode.col
+      ];
+      let visistedNodes = BFS(this.grid, startNode, finishNode);
+      let shortestPath = findTheShortestPathFromBFS(finishNode);
+      this.visualizeAlgo(visistedNodes, shortestPath);
+    },
     runBidirectional() {
       const startNode = this.grid[this.$store.state.startNode.row][
         this.$store.state.startNode.col
@@ -66,23 +77,25 @@ export default {
       const finishNode = this.grid[this.$store.state.finishNode.row][
         this.$store.state.finishNode.col
       ];
-      let test = bidirectionalDijkstra(this.grid, startNode, finishNode);
-      let path = findTheShortestPathFromBidirectional();
-      this.visualizeAlgo(test, path);
+      let visitedNodes = bidirectionalDijkstra(
+        this.grid,
+        startNode,
+        finishNode
+      );
+      let shortestPath = findTheShortestPathFromBidirectional();
+      this.visualizeAlgo(visitedNodes, shortestPath);
     },
     runPathfindingAlgo() {
       this.resetVisitedGrid();
-      if (this.$store.state.selectedAlgorithm.toLowerCase() === "a* search") {
+      let selectedAlgo = this.$store.state.selectedAlgorithm.toLowerCase();
+      if (selectedAlgo === "a* search") {
         this.runAstarAlgo();
-      } else if (
-        this.$store.state.selectedAlgorithm.toLowerCase() === "dijkstra"
-      ) {
+      } else if (selectedAlgo === "dijkstra") {
         this.runDijkstraAlgo();
-      } else if (
-        this.$store.state.selectedAlgorithm.toLowerCase() ===
-        "bidirectional dijkstra"
-      ) {
+      } else if (selectedAlgo === "bidirectional dijkstra") {
         this.runBidirectional();
+      } else if (selectedAlgo === "bfs") {
+        this.runBFS();
       }
     },
     runAstarAlgo() {
@@ -186,6 +199,7 @@ export default {
           this.grid[i][j].isVisited = false;
           this.grid[i][j].distance = Infinity;
           this.grid[i][j].isWall = false;
+          this.grid[i][j].previousNode = null;
         }
       }
       let visitedNodes = document.querySelectorAll(".node");

@@ -1,13 +1,21 @@
-const unvisitedNodesFromStart = [];
-const unvisitedNodesFromFinish = [];
-const visitedNodesFromFinish = [];
-const visitedNodesFromStart = [];
-let found = false;
+let unvisitedNodesFromStart = [];
+let unvisitedNodesFromFinish = [];
+let visitedNodesFromFinish = [];
+let visitedNodesFromStart = [];
+let foundByBothTarget = false;
 let foundNode = null;
 let lastNode = null;
-let last = undefined;
+let lastFrom = undefined;
 
 export function bidirectionalDijkstra(grid, startNode, finishNode) {
+  unvisitedNodesFromStart = [];
+  unvisitedNodesFromFinish = [];
+  visitedNodesFromFinish = [];
+  visitedNodesFromStart = [];
+  foundByBothTarget = false;
+  foundNode = null;
+  lastNode = null;
+  lastFrom = null;
   startNode.distance = 0;
   finishNode.distance = 0;
   const visistedNodesInOrder = [];
@@ -28,8 +36,8 @@ export function bidirectionalDijkstra(grid, startNode, finishNode) {
       currNodeStart.isVisited = true;
       visistedNodesInOrder.push(currNodeStart);
       visitedNodesFromStart.push(currNodeStart);
-      if (found) {
-        if (last == "start") {
+      if (foundByBothTarget) {
+        if (lastFrom == "start") {
           sortNodesByDistance(visitedNodesFromStart);
 
           lastNode = visitedNodesFromStart[visitedNodesFromStart.length - 1];
@@ -51,8 +59,8 @@ export function bidirectionalDijkstra(grid, startNode, finishNode) {
       currNodeFinish.isVisited = true;
       visistedNodesInOrder.push(currNodeFinish);
       visitedNodesFromFinish.push(currNodeFinish);
-      if (found) {
-        if (last == "start") {
+      if (foundByBothTarget) {
+        if (lastFrom == "start") {
           sortNodesByDistance(visitedNodesFromStart);
 
           lastNode = visitedNodesFromStart[visitedNodesFromStart.length - 1];
@@ -76,7 +84,7 @@ export function bidirectionalDijkstra(grid, startNode, finishNode) {
       return visistedNodesInOrder;
     }
   }
-  if (last == "start") {
+  if (lastFrom == "start") {
     sortNodesByDistance(visitedNodesFromStart);
     lastNode = visitedNodesFromStart[visitedNodesFromStart.length - 1];
   } else {
@@ -102,17 +110,17 @@ function updateUnvisitedNeighbours(
   for (let neighbour of unvisitedNeighbours) {
     if (isFromStart) {
       if (visitedNodesFromFinish.includes(neighbour)) {
-        last = "start";
+        lastFrom = "start";
 
         foundNode = neighbour;
-        found = true;
+        foundByBothTarget = true;
         return;
       }
     } else if (isFromFinish) {
       if (visitedNodesFromStart.includes(neighbour)) {
         foundNode = neighbour;
-        last = "finish";
-        found = true;
+        lastFrom = "finish";
+        foundByBothTarget = true;
         return;
       }
     }
