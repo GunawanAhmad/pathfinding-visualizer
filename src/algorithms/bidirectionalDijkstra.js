@@ -5,7 +5,6 @@ let visitedNodesFromStart = [];
 let foundByBothTarget = false;
 let foundNode = null;
 let lastNode = null;
-let lastFrom = undefined;
 
 export function bidirectionalDijkstra(grid, startNode, finishNode) {
   unvisitedNodesFromStart = [];
@@ -15,7 +14,6 @@ export function bidirectionalDijkstra(grid, startNode, finishNode) {
   foundByBothTarget = false;
   foundNode = null;
   lastNode = null;
-  lastFrom = null;
   startNode.distance = 0;
   finishNode.distance = 0;
   const visistedNodesInOrder = [];
@@ -37,14 +35,6 @@ export function bidirectionalDijkstra(grid, startNode, finishNode) {
       visistedNodesInOrder.push(currNodeStart);
       visitedNodesFromStart.push(currNodeStart);
       if (foundByBothTarget) {
-        if (lastFrom == "start") {
-          sortNodesByDistance(visitedNodesFromStart);
-
-          lastNode = visitedNodesFromStart[visitedNodesFromStart.length - 1];
-        } else {
-          sortNodesByDistance(visitedNodesFromFinish);
-          lastNode = visitedNodesFromFinish[visitedNodesFromFinish.length - 1];
-        }
         return visistedNodesInOrder;
       }
       updateUnvisitedNeighbours(
@@ -60,14 +50,6 @@ export function bidirectionalDijkstra(grid, startNode, finishNode) {
       visistedNodesInOrder.push(currNodeFinish);
       visitedNodesFromFinish.push(currNodeFinish);
       if (foundByBothTarget) {
-        if (lastFrom == "start") {
-          sortNodesByDistance(visitedNodesFromStart);
-
-          lastNode = visitedNodesFromStart[visitedNodesFromStart.length - 1];
-        } else {
-          sortNodesByDistance(visitedNodesFromFinish);
-          lastNode = visitedNodesFromFinish[visitedNodesFromFinish.length - 1];
-        }
         return visistedNodesInOrder;
       }
       updateUnvisitedNeighbours(
@@ -84,14 +66,7 @@ export function bidirectionalDijkstra(grid, startNode, finishNode) {
       return visistedNodesInOrder;
     }
   }
-  if (lastFrom == "start") {
-    sortNodesByDistance(visitedNodesFromStart);
-    lastNode = visitedNodesFromStart[visitedNodesFromStart.length - 1];
-  } else {
-    sortNodesByDistance(visitedNodesFromFinish);
-    lastNode = visitedNodesFromFinish[visitedNodesFromFinish.length - 1];
-    console.log(visitedNodesFromFinish[visitedNodesFromFinish.length - 1]);
-  }
+
   return visistedNodesInOrder;
 }
 
@@ -108,19 +83,19 @@ function updateUnvisitedNeighbours(
 ) {
   const unvisitedNeighbours = getUnvisistedNeighbours(node, grid);
   for (let neighbour of unvisitedNeighbours) {
+    if (neighbour.isWall) continue;
     if (isFromStart) {
-      if (visitedNodesFromFinish.includes(neighbour)) {
-        lastFrom = "start";
-
+      if (unvisitedNodesFromFinish.includes(neighbour)) {
         foundNode = neighbour;
         foundByBothTarget = true;
+        lastNode = node;
         return;
       }
     } else if (isFromFinish) {
-      if (visitedNodesFromStart.includes(neighbour)) {
+      if (unvisitedNodesFromStart.includes(neighbour)) {
         foundNode = neighbour;
-        lastFrom = "finish";
         foundByBothTarget = true;
+        lastNode = node;
         return;
       }
     }
