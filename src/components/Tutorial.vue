@@ -86,6 +86,12 @@ export default {
           img: "drag.gif",
         },
         {
+          Title: "Dragging Nodes",
+          description:
+            "You can change the start and target/finish node even after an algorithm has finished running to instantly see the result",
+          img: "visualizeWithMove.gif",
+        },
+        {
           Title: "Adding Walls",
           description:
             "Click the grid to add a wall, click and hold and move your mouse to add more wall. Walls are impenetrable, meaning that a path cannot cross through them.",
