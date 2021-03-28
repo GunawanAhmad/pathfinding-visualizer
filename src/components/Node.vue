@@ -72,6 +72,8 @@ export default {
 
     dragStart(e) {
       e.target.style.opacity = "0";
+      e.target.classList.remove("start-node");
+      e.target.classList.remove("finish-node");
     },
     dragEnd(e) {
       e.preventDefault();
@@ -106,12 +108,12 @@ export default {
       e.preventDefault();
       if (e.target.draggable) return;
       if (this.$store.state.draggedNode == "wall") return;
+      this.$store.state.draggedElm.style.opacity = "1";
       this.$store.state.draggedElm = e.target;
       e.target.style.opacity = "1";
       if (this.$store.state.draggedNode == "start") {
         e.target.classList.add("start-node");
         this.$store.state.draggedElm = e.target;
-
         // e.target.draggable = true;
       } else if (this.$store.state.draggedNode == "target") {
         this.$store.state.draggedNode = "target";
@@ -128,6 +130,8 @@ export default {
         this.$emit("mouseUp", false);
         e.target.classList.remove("wall");
       }
+      this.setStartOrTargetNode(e.target);
+      this.$emit("visualize");
     },
     dragLeave(e) {
       e.preventDefault();
@@ -142,7 +146,7 @@ export default {
     dragDrop(e) {
       if (e.target.draggable) return;
       if (this.$store.state.draggedNode == "wall") return;
-      this.setStartOrTargetNode(e.target);
+      // this.setStartOrTargetNode(e.target);
       e.target.draggable = true;
     },
 

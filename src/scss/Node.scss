@@ -27,6 +27,12 @@
     &.short::before {
       color: white !important;
     }
+    &.vis-no-anim::before {
+      color: white !important;
+    }
+    &.sho-no-anim::before {
+      color: white !important;
+    }
   }
 
   &.start-node {
@@ -47,6 +53,12 @@
     &.visited::before {
       color: white !important;
     }
+    &.vis-no-anim::before {
+      color: white !important;
+    }
+    &.sho-no-anim::before {
+      color: white !important;
+    }
   }
 
   &.visited {
@@ -61,6 +73,10 @@
     // outline: none;
   }
 
+  &.vis-no-anim {
+    background: var(--visited-clr);
+  }
+
   &.short {
     animation-name: shortestPath;
     animation-duration: 1.5s;
@@ -70,6 +86,10 @@
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
     animation-play-state: running;
+  }
+
+  &.sho-no-anim {
+    background-color: var(--shortestPath-clr);
   }
 
   &.wall {

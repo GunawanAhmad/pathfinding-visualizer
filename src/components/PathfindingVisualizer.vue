@@ -8,6 +8,7 @@
         @mouseDown="handleMouseDown"
         @mouseEnter="handleMouseEnter"
         @mouseUp="handleMouseUp"
+        @visualize="visualizeByMove"
       ></Node>
     </div>
   </div>
@@ -33,6 +34,7 @@ export default {
       grid: [],
       selectedAlgorithm: "astar",
       isMousePressed: false,
+      isWithAnim: true,
     };
   },
   methods: {
@@ -66,9 +68,13 @@ export default {
       const finishNode = this.grid[this.$store.state.finishNode.row][
         this.$store.state.finishNode.col
       ];
-      let visistedNodes = BFS(this.grid, startNode, finishNode);
+      let visitedNodes = BFS(this.grid, startNode, finishNode);
       let shortestPath = findTheShortestPathFromBFS(finishNode);
-      this.visualizeAlgo(visistedNodes, shortestPath);
+      if (this.isWithAnim) {
+        this.visualizeAlgo(visitedNodes, shortestPath);
+      } else {
+        this.visualizeAlgoFast(visitedNodes, shortestPath);
+      }
     },
     runBidirectional() {
       const startNode = this.grid[this.$store.state.startNode.row][
@@ -83,11 +89,16 @@ export default {
         finishNode
       );
       let shortestPath = findTheShortestPathFromBidirectional();
-      this.visualizeAlgo(visitedNodes, shortestPath);
+      if (this.isWithAnim) {
+        this.visualizeAlgo(visitedNodes, shortestPath);
+      } else {
+        this.visualizeAlgoFast(visitedNodes, shortestPath);
+      }
     },
     runPathfindingAlgo() {
       this.resetVisitedGrid();
       let selectedAlgo = this.$store.state.selectedAlgorithm.toLowerCase();
+
       if (selectedAlgo === "a* search") {
         this.runAstarAlgo();
       } else if (selectedAlgo === "dijkstra") {
@@ -107,7 +118,12 @@ export default {
       ];
       let visitedList = aStar(this.grid, startNode, finishNode);
       let shortestPath = findTheShortestPathFromAstar(finishNode);
-      this.visualizeAlgo(visitedList, shortestPath);
+      if (this.isWithAnim) {
+        console.log("hei");
+        this.visualizeAlgo(visitedList, shortestPath);
+      } else {
+        this.visualizeAlgoFast(visitedList, shortestPath);
+      }
     },
 
     runDijkstraAlgo() {
@@ -122,7 +138,11 @@ export default {
 
       visitedNodeInOrder = dijkstra(this.grid, startNode, finishNode);
       shortestPathNodesInOrder = findTheShortestPath(finishNode);
-      this.visualizeAlgo(visitedNodeInOrder, shortestPathNodesInOrder);
+      if (this.isWithAnim) {
+        this.visualizeAlgo(visitedNodeInOrder, shortestPathNodesInOrder);
+      } else {
+        this.visualizeAlgoFast(visitedNodeInOrder, shortestPathNodesInOrder);
+      }
     },
     visualizeAlgo(visitedNodeInOrder, shortestPathNodesInOrder) {
       this.$store.state.runBtn.disabled = true;
@@ -190,7 +210,9 @@ export default {
 
       visitedNodes.forEach((node) => {
         node.classList.remove("visited");
+        node.classList.remove("vis-no-anim");
         node.classList.remove("short");
+        node.classList.remove("sho-no-anim");
       });
     },
     clearBoard() {
@@ -203,26 +225,50 @@ export default {
         }
       }
       let visitedNodes = document.querySelectorAll(".node");
+      this.$store.state.runningState = "start";
+      this.isWithAnim = true;
 
       visitedNodes.forEach((node) => {
         node.classList.remove("visited");
         node.classList.remove("short");
+        node.classList.remove("sho-no-anim");
+        node.classList.remove("vis-no-anim");
         node.classList.remove("wall");
       });
+    },
+    visualizeByMove() {
+      if (this.$store.state.runningState == "finish") {
+        this.isWithAnim = false;
+        this.runPathfindingAlgo();
+      }
+    },
+    visualizeAlgoFast(visitedNodeInOrder, shortestPathNodesInOrder) {
+      for (let i = 0; i < shortestPathNodesInOrder.length; i++) {
+        const node = shortestPathNodesInOrder[i];
+        document
+          .getElementById(`node-${node.row}-${node.col}`)
+          .classList.add("sho-no-anim");
+      }
+
+      for (let i = 0; i < visitedNodeInOrder.length; i++) {
+        const node = visitedNodeInOrder[i];
+        document
+          .getElementById(`node-${node.row}-${node.col}`)
+          .classList.add("vis-no-anim");
+      }
     },
   },
   mounted() {
     this.grid = this.getInitialGrid();
     this.$store.state.runBtn.addEventListener("click", () => {
-      if (this.$store.state.runBtn.classList.contains("start")) {
-        this.$store.state.runBtn.classList.remove("start");
-        this.$store.state.runBtn.classList.add("finish");
+      if (this.$store.state.runningState == "start") {
+        this.$store.state.runningState = "finish";
         this.runPathfindingAlgo();
-      } else if (this.$store.state.runBtn.classList.contains("finish")) {
+      } else if (this.$store.state.runningState == "finish") {
+        this.isWithAnim = true;
         this.runPathfindingAlgo();
       }
     });
-
     this.$store.state.clearBtn.addEventListener("click", () => {
       this.clearBoard();
     });

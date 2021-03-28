@@ -22,6 +22,7 @@ export default new Vuex.Store({
     draggedNode: "",
     draggedElm: null,
     dragElm: null,
+    runningState: "start",
   },
   mutations: {},
   actions: {},
