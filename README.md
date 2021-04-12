@@ -1,5 +1,6 @@
-# pathfinding-visualizer-dev
-
+# Pathfinding Visualizer
+Welcome to my pathfinding visualizer, this pathfinding visualizer was inspired by Clément Mihailescu pathfinding algorithm project. You can visit my Pathfinding visualizer here
+https://gunawanahmad.github.io/pathfinding-visualizer/#/ or visit Clément Mihailescu Youtube Channel here https://www.youtube.com/channel/UCaO6VoaYJv4kS-TQO_M-N_g
 ## Project setup
 ```
 npm install
